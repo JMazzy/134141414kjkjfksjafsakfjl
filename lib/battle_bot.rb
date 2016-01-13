@@ -1,10 +1,10 @@
 class BattleBot
   attr_reader :name, :health, :enemies, :weapon, :dead
 
-  @@bots = []
+  @@count = 0
 
   def self.count
-    @@bots.length
+    @@count
   end
 
   def initialize(name,health=100)
@@ -14,11 +14,11 @@ class BattleBot
     @weapon = nil
     @enemies = []
     @dead = false
-    @@bots << self
+    @@count += 1
   end
 
   def dead?
-    @dead
+    !!@dead
   end
 
   def has_weapon?
@@ -48,7 +48,7 @@ class BattleBot
     else
       @health = 0
       @dead = true
-      @@bots.remove(self)
+      @@count -= 1
     end
     @health
   end
@@ -81,11 +81,11 @@ class BattleBot
   end
 
   def defend_against(enemy)
-    if !enemy.dead? && enemy.has_weapon?
+    if !dead? && has_weapon?
       attack(enemy)
     end
   end
-
+  
   def has_weapon?
     !!@weapon
   end
